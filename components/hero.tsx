@@ -6,10 +6,26 @@ import Link from "next/link"
 import Image from "next/image"
 import { motion, useScroll, useTransform, Variants } from "framer-motion"
 import { AnimatedBackground } from "./animated-background"
-import { useRef } from "react"
+import { useRef, useState, useEffect } from "react"
 
 export function Hero() {
   const ref = useRef(null)
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight
+      })
+    }
+    
+    updateDimensions()
+    window.addEventListener('resize', updateDimensions)
+    
+    return () => window.removeEventListener('resize', updateDimensions)
+  }, [])
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -73,7 +89,85 @@ export function Hero() {
         style={{ y, opacity }}
         className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 dark:from-slate-950 dark:via-slate-900 dark:to-blue-950 overflow-hidden"
       >
-        <div className="absolute inset-0 bg-[url(/pattern.svg)] opacity-20" />
+        <div className="absolute inset-0 w-full h-full">
+          {[...Array(400)].map((_, i) => {
+            const direction = i % 4; // Create 4 different movement patterns
+            const animationProps = {
+              0: { // Up and down
+                animate: {
+                  y: [
+                    Math.floor(i / 30) * 40,
+                    Math.floor(i / 30) * 40 + 15,
+                    Math.floor(i / 30) * 40,
+                  ]
+                }
+              },
+              1: { // Left and right
+                animate: {
+                  x: [
+                    (i % 30) * 40,
+                    (i % 30) * 40 + 15,
+                    (i % 30) * 40,
+                  ]
+                }
+              },
+              2: { // Diagonal
+                animate: {
+                  x: [
+                    (i % 30) * 40,
+                    (i % 30) * 40 + 10,
+                    (i % 30) * 40,
+                  ],
+                  y: [
+                    Math.floor(i / 30) * 40,
+                    Math.floor(i / 30) * 40 + 10,
+                    Math.floor(i / 30) * 40,
+                  ]
+                }
+              },
+              3: { // Circular
+                animate: {
+                  x: [
+                    (i % 30) * 40,
+                    (i % 30) * 40 + 10,
+                    (i % 30) * 40,
+                    (i % 30) * 40 - 10,
+                    (i % 30) * 40,
+                  ],
+                  y: [
+                    Math.floor(i / 30) * 40,
+                    Math.floor(i / 30) * 40 + 10,
+                    Math.floor(i / 30) * 40,
+                    Math.floor(i / 30) * 40 - 10,
+                    Math.floor(i / 30) * 40,
+                  ]
+                }
+              }
+            }[direction];
+
+            return (
+              <motion.div
+                key={i}
+                className="absolute w-1 h-1 bg-white/20 rounded-full"
+                initial={{
+                  x: (i % 30) * 40,
+                  y: Math.floor(i / 30) * 40,
+                }}
+                {...animationProps}
+                transition={{
+                  duration: 3 + (i % 2) * 2, // Varied duration
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: i % 6 * 0.1, // More varied delays
+                }}
+                style={{
+                  left: `${(i % 30) * 2.5}%`,
+                  top: `${Math.floor(i / 30) * 2.5}%`,
+                }}
+              />
+            );
+          })}
+        </div>
       </motion.div>
 
       <div className="relative z-10 container mx-auto px-4 text-center text-white">
