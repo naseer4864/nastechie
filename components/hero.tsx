@@ -71,7 +71,7 @@ export function Hero() {
       {/* Animated gradient background */}
       <motion.div
         style={{ y, opacity }}
-        className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 dark:from-slate-950 dark:via-slate-900 dark:to-blue-950"
+        className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 dark:from-slate-950 dark:via-slate-900 dark:to-blue-950 overflow-hidden"
       >
         <div className="absolute inset-0 bg-[url(/pattern.svg)] opacity-20" />
       </motion.div>
