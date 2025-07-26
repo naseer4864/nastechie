@@ -22,7 +22,7 @@ export function Projects() {
     {
       title: "Bookit - Rewards Platform",
       description:
-        "A rewards system tied to node licenses. Users earn daily rewards through a task system with automated claiming. Features admin flagging and Pub/Sub for scheduled tasks.",
+        "A comprehensive travel booking platform for flights, trains, buses, and hotels with an integrated rewards system. Features automated task completion, claim processing, and admin management.",
       image: "/placeholder.svg?height=200&width=400",
       technologies: ["Node.js", "TypeScript", "Express.js", "MongoDB", "Supabase", "Next.js"],
       liveUrl: "https://bookit-demo.vercel.app",

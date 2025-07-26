@@ -5,11 +5,82 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Mail, MapPin, Phone, Linkedin, Github, Send } from "lucide-react"
 import Link from "next/link"
 import { motion } from "framer-motion"
+import { useState } from "react"
 
 export function Contact() {
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    countryCode: '+234',
+    subject: '',
+    message: ''
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+
+  const countryCodes = [
+    { code: '+234', country: 'Nigeria' },
+    { code: '+1', country: 'USA/Canada' },
+    { code: '+44', country: 'UK' },
+    { code: '+91', country: 'India' },
+    { code: '+86', country: 'China' },
+    { code: '+81', country: 'Japan' },
+    { code: '+49', country: 'Germany' },
+    { code: '+33', country: 'France' },
+    { code: '+61', country: 'Australia' },
+    { code: '+27', country: 'South Africa' },
+  ]
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    setSubmitStatus('idle')
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          phone: `${formData.countryCode}${formData.phone}`
+        }),
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        setSubmitStatus('success')
+        setFormData({
+          firstName: '',
+          lastName: '',
+          email: '',
+          phone: '',
+          countryCode: '+234',
+          subject: '',
+          message: ''
+        })
+      } else {
+        setSubmitStatus('error')
+      }
+    } catch (error) {
+      setSubmitStatus('error')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }))
+  }
+
   return (
     <section id="contact" className="py-20 bg-slate-900 dark:bg-slate-950">
       <div className="container mx-auto px-4">
@@ -51,8 +122,8 @@ export function Contact() {
                     <Phone className="w-5 h-5 text-blue-400" />
                     <div>
                       <p className="font-medium">Phone</p>
-                      <Link href="tel:07036676508" className="hover:text-blue-400 transition-colors">
-                        07036676508
+                      <Link href="tel:+2347036676508" className="hover:text-blue-400 transition-colors">
+                        +234 703 667 6508
                       </Link>
                     </div>
                   </div>
@@ -117,7 +188,7 @@ export function Contact() {
                   <CardTitle className="text-white">Send Me a Message</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <form className="space-y-4">
+                  <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label htmlFor="firstName" className="text-slate-300">
@@ -125,8 +196,11 @@ export function Contact() {
                         </Label>
                         <Input
                           id="firstName"
+                          value={formData.firstName}
+                          onChange={(e) => handleInputChange('firstName', e.target.value)}
                           placeholder="John"
                           className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
+                          required
                         />
                       </div>
                       <div className="space-y-2">
@@ -135,8 +209,11 @@ export function Contact() {
                         </Label>
                         <Input
                           id="lastName"
+                          value={formData.lastName}
+                          onChange={(e) => handleInputChange('lastName', e.target.value)}
                           placeholder="Doe"
                           className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
+                          required
                         />
                       </div>
                     </div>
@@ -148,9 +225,41 @@ export function Contact() {
                       <Input
                         id="email"
                         type="email"
+                        value={formData.email}
+                        onChange={(e) => handleInputChange('email', e.target.value)}
                         placeholder="john@example.com"
                         className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
+                        required
                       />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="phone" className="text-slate-300">
+                        Phone Number
+                      </Label>
+                      <div className="flex gap-2">
+                        <Select value={formData.countryCode} onValueChange={(value) => handleInputChange('countryCode', value)}>
+                          <SelectTrigger className="w-24 bg-slate-700 border-slate-600 text-white">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="bg-slate-700 border-slate-600">
+                            {countryCodes.map((country) => (
+                              <SelectItem key={country.code} value={country.code} className="text-white">
+                                {country.code}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <Input
+                          id="phone"
+                          type="tel"
+                          value={formData.phone}
+                          onChange={(e) => handleInputChange('phone', e.target.value)}
+                          placeholder="7036676508"
+                          className="flex-1 bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
+                          required
+                        />
+                      </div>
                     </div>
 
                     <div className="space-y-2">
@@ -159,8 +268,11 @@ export function Contact() {
                       </Label>
                       <Input
                         id="subject"
+                        value={formData.subject}
+                        onChange={(e) => handleInputChange('subject', e.target.value)}
                         placeholder="Project Discussion"
                         className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
+                        required
                       />
                     </div>
 
@@ -170,15 +282,43 @@ export function Contact() {
                       </Label>
                       <Textarea
                         id="message"
+                        value={formData.message}
+                        onChange={(e) => handleInputChange('message', e.target.value)}
                         placeholder="Tell me about your project..."
                         rows={5}
                         className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
+                        required
                       />
                     </div>
 
-                    <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700">
-                      <Send className="w-4 h-4 mr-2" />
-                      Send Message
+                    {submitStatus === 'success' && (
+                      <div className="p-3 bg-green-600/20 border border-green-600/50 rounded-lg text-green-400 text-sm">
+                        Message sent successfully! I'll get back to you soon.
+                      </div>
+                    )}
+
+                    {submitStatus === 'error' && (
+                      <div className="p-3 bg-red-600/20 border border-red-600/50 rounded-lg text-red-400 text-sm">
+                        Failed to send message. Please try again.
+                      </div>
+                    )}
+
+                    <Button 
+                      type="submit" 
+                      className="w-full bg-blue-600 hover:bg-blue-700"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                          Sending...
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-4 h-4 mr-2" />
+                          Send Message
+                        </>
+                      )}
                     </Button>
                   </form>
                 </CardContent>

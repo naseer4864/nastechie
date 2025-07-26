@@ -112,11 +112,11 @@ export function Experience() {
       period: "2024",
       duration: "6 months",
       description:
-        "Built sophisticated rewards system tied to $5K node licenses. Engineered daily rewards mechanism with automated task system and claim automation. Developed scalable backend APIs and cron job processors with Pub/Sub architecture for scheduled tasks and admin flagging logic.",
+        "Built a comprehensive travel booking platform for flights, trains, buses, and hotels. Engineered a sophisticated rewards system with automated task completion and claim processing. Developed scalable backend APIs with Pub/Sub architecture for scheduled tasks and admin management system.",
       technologies: ["Node.js", "TypeScript", "Express.js", "MongoDB", "Supabase", "Next.js", "Go (Golang)"],
       achievements: [
-        "Processed $500K+ in rewards",
-        "Built automated claiming system",
+        "Processed 500K+ bookings",
+        "Built automated rewards system",
         "Implemented fraud detection algorithms",
       ],
       featured: false,
@@ -219,7 +219,7 @@ export function Experience() {
               animate={{ scale: [0.9, 1.05, 1] }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              Professional Journey 🚀
+              Professional Journey
             </motion.h2>
             <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
               My career progression and key accomplishments in building world-class digital solutions

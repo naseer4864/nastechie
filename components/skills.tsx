@@ -24,7 +24,7 @@ export function Skills() {
     },
     {
       title: "Database & Cloud",
-      skills: ["MongoDB", "MySQL", "PostgreSQL", "Firebase", "Supabase", "Redis", "AWS", "Vercel", "Docker"],
+      skills: ["MongoDB", "MySQL", "PostgreSQL", "Firebase", "Supabase", "Redis", "AWS", "Vercel", "Docker", "Render", "Heroku", "DigitalOcean", "Railway"],
       color: "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300",
       icon: "🗄️",
     },
@@ -92,7 +92,7 @@ export function Skills() {
               animate={isInView ? { scale: [0.9, 1.05, 1] } : {}}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              Technical Arsenal 🚀
+              Technical Arsenal
             </motion.h2>
             <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
               A comprehensive showcase of cutting-edge technologies and tools I master

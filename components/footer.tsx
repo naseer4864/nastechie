@@ -90,7 +90,7 @@ export function Footer() {
             >
               <h3 className="text-xl font-bold mb-4 text-blue-400">Contact</h3>
               <p className="text-slate-300 mb-2">Lagos, Nigeria</p>
-              <p className="text-slate-300 mb-2">07036676508</p>
+              <p className="text-slate-300 mb-2">+234 703 667 6508</p>
               <p className="text-slate-300 mb-2">naseernoor4864@gmail.com</p>
             </motion.div>
           </div>

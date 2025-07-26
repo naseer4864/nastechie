@@ -221,26 +221,53 @@ export function Hero() {
 
           {/* Name with gradient text animation */}
           <motion.div variants={itemVariants} className="mb-8">
-            <motion.h1
-              className="text-4xl sm:text-6xl md:text-8xl font-black mb-4 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent"
-              animate={{
-                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-              }}
-              transition={{
-                duration: 5,
-                repeat: Infinity,
-                ease: "linear",
-              }}
-              style={{
-                backgroundSize: "200% 200%",
-              }}
-            >
-              NasTechie
-            </motion.h1>
+            <div className="relative">
+              {/* Text particles */}
+              {[...Array(9)].map((_, i) => (
+                <motion.span
+                  key={i}
+                  className="text-4xl sm:text-6xl md:text-8xl font-black bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent inline-block"
+                  initial={{
+                    x: 0,
+                    y: 0,
+                    opacity: 1,
+                    scale: 1,
+                  }}
+                  animate={{
+                    x: [
+                      0,
+                      (Math.random() - 0.5) * 300,
+                      (Math.random() - 0.5) * 300,
+                      0,
+                    ],
+                    y: [
+                      0,
+                      (Math.random() - 0.5) * 150,
+                      (Math.random() - 0.5) * 150,
+                      0,
+                    ],
+                    opacity: [1, 0.7, 0.7, 1],
+                    scale: [1, 0.8, 0.8, 1],
+                  }}
+                  transition={{
+                    duration: 2.5,
+                    ease: "easeInOut",
+                    delay: i * 0.1,
+                    repeat: Infinity,
+                    repeatDelay: 5,
+                  }}
+                  style={{
+                    backgroundSize: "200% 200%",
+                  }}
+                >
+                  {["N", "a", "s", "T", "e", "c", "h", "i", "e"][i]}
+                </motion.span>
+              ))}
+            </div>
             
             <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
               transition={{
                 type: "spring",
                 stiffness: 260,
@@ -272,7 +299,7 @@ export function Hero() {
               className="flex items-center gap-2 cursor-pointer"
             >
               <Phone className="w-5 h-5" />
-              <span>07036676508</span>
+              <span>+234 703 667 6508</span>
             </motion.div>
           </motion.div>
 
@@ -283,7 +310,7 @@ export function Hero() {
           >
             Passionate full-stack developer specializing in cutting-edge web technologies, blockchain development, and
             scalable enterprise solutions. I craft innovative digital experiences that bridge the gap between
-            imagination and reality. 🚀
+            imagination and reality.
           </motion.p>
 
           {/* CTA Buttons with hover effects */}
